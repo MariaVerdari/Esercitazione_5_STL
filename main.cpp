@@ -84,9 +84,11 @@ int main()
 	
 	}
 
-	
-	/// TEST PER L'AREA DEI POLIGONI
-	for (int polyg: mesh.Cell2DsId){
+
+
+
+/*
+for (int polyg: mesh.Cell2DsId){
 		vector<int> vertices = mesh.Cell2DsVertices[polyg];
 		double area = 0;
 		int numVert =  vertices.size();
@@ -102,19 +104,87 @@ int main()
 		
 		area = fabs(area);
 		area = area/2.0;
-		cout <<setprecision(16)<<area<<endl;
-
-
 		
-		if( area == std::numeric_limits<double>::epsilon() ) 
+		
+		*/
+		
+	
+	/// TEST PER L'AREA DEI POLIGONI
+	for (int polyg: mesh.Cell2DsId){
+		vector<int> vertices = mesh.Cell2DsVertices[polyg];
+		double area = 0;
+		int numVert =  vertices.size();
+		
+		
+		// trovo baricentro
+		double x_bar = 0;
+		double y_bar = 0;
+		
+		for (int vert : vertices){
+			x_bar += mesh.Cell0DsCoordinates( 0, vert);
+			y_bar += mesh.Cell0DsCoordinates( 1, vert);
+		}
+		
+		x_bar = x_bar/double(numVert);
+		y_bar = y_bar/double(numVert);
+		
+		//traslo tutti i vertici in modo da avere baricentro nell'origine
+		
+	
+		map<double, int> angoli;
+
+			
+		for (int i = 0; i< numVert; i++){
+			double x_trasl = mesh.Cell0DsCoordinates( 0, vertices[i]) - x_bar;
+			double y_trasl = mesh.Cell0DsCoordinates( 1, vertices[i]) - y_bar;
+			
+			double ang = atan2(y_trasl, x_trasl);
+			if (ang<0)
+				ang+= 2*M_PI;
+			angoli.insert({ang,{vertices[i]}});
+
+		}	
+		int vert_orario[numVert];
+		int i = 0;
+		for (auto [angolo, vertice] : angoli){
+			vert_orario[i] = vertice;
+			i++;
+			
+		}
+			
+		
+		for (int i = 0; i<numVert-1;i++)
+		{
+			int vert1 = vert_orario[i];
+			int vert2 = vert_orario[i+1];
+			area =area + mesh.Cell0DsCoordinates( 0, vert1) * mesh.Cell0DsCoordinates( 1, vert2);
+			area =area - mesh.Cell0DsCoordinates( 1, vert1) * mesh.Cell0DsCoordinates( 0, vert2);
+		}
+		area = area + mesh.Cell0DsCoordinates( 0, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates( 1, vert_orario[0]);
+		area = area - mesh.Cell0DsCoordinates( 1, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates(0, vert_orario[0]);
+		
+		area = fabs(area);
+		area = area/2.0;
+		
+		double eps = std::numeric_limits<double>::epsilon();
+		double tol2d = sqrt(3.0)*(eps*eps)/4.0;
+
+
+
+		if( area < tol2d) 
         throw std::runtime_error("Area nulla");
 	
 	}
+		
+		
 	
-	for (int el : mesh.Cell2DsVertices[6])
-		cout<<el<<endl;
-	double j =fabs(mesh.Cell0DsCoordinates( 0, 14) * mesh.Cell0DsCoordinates( 1, 19) -mesh.Cell0DsCoordinates( 1, 14) * mesh.Cell0DsCoordinates( 0, 19) +mesh.Cell0DsCoordinates( 0, 19) * mesh.Cell0DsCoordinates( 1, 10) -mesh.Cell0DsCoordinates( 1, 19) * mesh.Cell0DsCoordinates( 0, 10) + mesh.Cell0DsCoordinates( 0, 10) * mesh.Cell0DsCoordinates( 1, 14) -mesh.Cell0DsCoordinates( 1, 10) * mesh.Cell0DsCoordinates( 0, 14));
-	cout<<j/2.0<<endl;
+		
+
+		
+		
+		
+
+
 	// test nel main
 	//per il primo test stampo per ogni marker lista di vertici e di lati e faccio test visivo oppure faccio mappa in cui inserisco valori a mano e poi controllo che le due mappe siano uguali
 	// per gli altri faccio funzione area e lunghezza e ciclo tutti (tolleranza)
