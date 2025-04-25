@@ -23,7 +23,6 @@ using namespace PolygonalLibrary;
 //cose da fare
 -funzione area e lunghezza
 -test nel main di area e lunghezza
--map marker e test dei marker (tolgo 0) e faccio mappa vera da confrontare
 -esportare mesh e test visivo
 */
 
@@ -43,7 +42,7 @@ int main()
 
 	
 	
-	// TEST PER I MARKER:
+	/// TEST PER I MARKER:
 	
 	cout<< "Test per i Marker:"<< endl;
 	cout <<endl;
@@ -80,7 +79,9 @@ int main()
 	
 	/// TEST PER LA LUNGHEZZA DEI LATI
 	for (int edge: mesh.Cell1DsId){
-		double len = fabs(mesh.Cell1DsExtrema(0,edge)-mesh.Cell1DsExtrema(1,edge));
+		double a =mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(1,edge));
+		double b =mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(1,edge));
+		double len = sqrt(a*a + b*b);
 		if( len < std::numeric_limits<double>::epsilon() ) 
         throw std::runtime_error("Lunghezza nulla");
 	
