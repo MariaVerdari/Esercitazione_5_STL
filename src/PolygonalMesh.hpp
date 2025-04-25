@@ -15,14 +15,13 @@ struct PolygonalMesh
 	unsigned int NumCell1Ds;
 	unsigned int NumCell2Ds;
 	
-	//conviene fare lista per aggiungere le righe dal file perchè non so quante righe ho e poi creo vettore per poter fare accesso diretto
 	
 	vector<int> Cell0DsId;
-	Eigen::MatrixXd Cell0DsCoordinates; //  x e y
+	Eigen::MatrixXd Cell0DsCoordinates; //  x e y e vuoto
 	map<int, list<int>> Cell0DsMarker;
 	
 	vector<int> Cell1DsId;
-	Eigen::MatrixXd Cell1DsExtrema; // origin e end
+	Eigen::MatrixXi Cell1DsExtrema; // origin e end
 	map<int, list<int>> Cell1DsMarker;
 
 	

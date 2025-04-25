@@ -124,7 +124,7 @@ bool ImportCell1D(PolygonalMesh& mesh){
 	
 	
 mesh.Cell1DsId.reserve(mesh.NumCell1Ds);
-mesh.Cell1DsExtrema = Eigen::MatrixXd::Zero(2, mesh.NumCell1Ds);
+mesh.Cell1DsExtrema = Eigen::MatrixXi::Zero(2, mesh.NumCell1Ds);
 
 for (string& line : listLines)
     {
@@ -253,10 +253,6 @@ return true;
 
 	
 
-
-
-
-//double Length(
 
 
 

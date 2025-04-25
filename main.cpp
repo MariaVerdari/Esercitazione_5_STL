@@ -11,7 +11,7 @@
 
 
 #include "PolygonalMesh.hpp"
-//#include "UCDUtilities.hpp"
+#include "UCDUtilities.hpp"
 
 using namespace std;
 using namespace Eigen;
@@ -33,21 +33,23 @@ int main()
 {   
 	PolygonalMesh mesh;
 	
-	
-	// mappa marker celle
-	
-	
+		
 
-	
-	bool a =  ImportMesh(mesh);
-	
-
-
+ if(!ImportMesh(mesh))
+    {
+        cerr << "file not found" << endl;
+        return 1;
+    }
 
 	
 	
 	// TEST PER I MARKER:
 	
+	cout<< "Test per i Marker:"<< endl;
+	cout <<endl;
+
+	
+	cout<<"Marker Cell0Ds:"<<endl;
 	for (auto &el : mesh.Cell0DsMarker) {
 		cout<<el.first<< ":  [ ";
 		for (int k :el.second)
@@ -57,6 +59,7 @@ int main()
 	}
 	cout<<endl;
 	
+	cout<<"Marker Cell1Ds:"<<endl;
 	for (auto &el : mesh.Cell1DsMarker) {
 		cout<<el.first<< ":  [ ";
 		for (int k :el.second)
@@ -65,7 +68,7 @@ int main()
 	}
 	cout<<endl;
 
-	
+	cout<<"Marker Cell2Ds:"<<endl;
 	for (auto &el : mesh.Cell2DsMarker) {
 		cout<<el.first<< ":  [ ";
 		for (int k :el.second)
@@ -74,7 +77,6 @@ int main()
 	}
 	cout<<endl;
 
-		
 	
 	/// TEST PER LA LUNGHEZZA DEI LATI
 	for (int edge: mesh.Cell1DsId){
@@ -177,15 +179,64 @@ for (int polyg: mesh.Cell2DsId){
 	}
 		
 		
+        
 	
 		
+    /// Per visualizzare online le mesh:
+    /// 1. Convertire i file .inp in file .vtu con https://meshconverter.it/it
+    /// 2. Caricare il file .vtu su https://kitware.github.io/glance/app/
+
+    Gedim::UCDUtilities utilities;
+    {
+        vector<Gedim::UCDProperty<double>> cell0Ds_properties(1);
+
+        cell0Ds_properties[0].Label = "Marker";
+        cell0Ds_properties[0].UnitLabel = "-";
+        cell0Ds_properties[0].NumComponents = 1;
+
+        vector<double> cell0Ds_marker(mesh.NumCell0Ds, 0.0);
+        for(const auto &m : mesh.Cell0DsMarker)
+            for(const unsigned int id: m.second)
+                cell0Ds_marker.at(id) = m.first;
+
+        cell0Ds_properties[0].Data = cell0Ds_marker.data();
+
+        utilities.ExportPoints("./Cell0Ds.inp",
+                               mesh.Cell0DsCoordinates,
+                               cell0Ds_properties);
+    }
+
+    {
+
+        vector<Gedim::UCDProperty<double>> cell1Ds_properties(1);
+
+        cell1Ds_properties[0].Label = "Marker";
+        cell1Ds_properties[0].UnitLabel = "-";
+        cell1Ds_properties[0].NumComponents = 1;
+
+        vector<double> cell1Ds_marker(mesh.NumCell1Ds, 0.0);
+        for(const auto &m : mesh.Cell1DsMarker)
+            for(const unsigned int id: m.second)
+                cell1Ds_marker.at(id) = m.first;
+
+        cell1Ds_properties[0].Data = cell1Ds_marker.data();
+
+        utilities.ExportSegments("./Cell1Ds.inp",
+                                 mesh.Cell0DsCoordinates,
+                                 mesh.Cell1DsExtrema,
+                                 {},
+                                 cell1Ds_properties);
+    }
+
+
+
+		
 
 		
 		
 		
 
 
-	// test nel main
 	//per il primo test stampo per ogni marker lista di vertici e di lati e faccio test visivo oppure faccio mappa in cui inserisco valori a mano e poi controllo che le due mappe siano uguali
 	// per gli altri faccio funzione area e lunghezza e ciclo tutti (tolleranza)
 	//per l'lutimo uso vicini(mesh converter su internet-paraview glance) o paraview-confronto visivo; file da ucd a utv-con coordinate di celle ( o anche marker e id)
