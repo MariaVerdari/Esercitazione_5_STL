@@ -90,28 +90,6 @@ int main()
 	}
 
 
-
-
-/*
-for (int polyg: mesh.Cell2DsId){
-		vector<int> vertices = mesh.Cell2DsVertices[polyg];
-		double area = 0;
-		int numVert =  vertices.size();
-		for (int i = 0; i <  numVert -1; i++)
-		{
-			int vert1 = vertices[i];
-			int vert2 = vertices[i+1];
-			area =area + mesh.Cell0DsCoordinates( 0, vert1) * mesh.Cell0DsCoordinates( 1, vert2);
-			area =area - mesh.Cell0DsCoordinates( 1, vert1) * mesh.Cell0DsCoordinates( 0, vert2);
-		}
-		area = area + mesh.Cell0DsCoordinates( 0, vertices[numVert-1]) * mesh.Cell0DsCoordinates( 1, vertices[0]);
-		area = area - mesh.Cell0DsCoordinates( 1, vertices[numVert-1]) * mesh.Cell0DsCoordinates(0, vertices[0]);
-		
-		area = fabs(area);
-		area = area/2.0;
-		
-		
-		*/
 		
 	
 	/// TEST PER L'AREA DEI POLIGONI
@@ -165,8 +143,8 @@ for (int polyg: mesh.Cell2DsId){
 			area =area + mesh.Cell0DsCoordinates( 0, vert1) * mesh.Cell0DsCoordinates( 1, vert2);
 			area =area - mesh.Cell0DsCoordinates( 1, vert1) * mesh.Cell0DsCoordinates( 0, vert2);
 		}
-		area = area + mesh.Cell0DsCoordinates( 0, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates( 1, vert_orario[0]);
-		area = area - mesh.Cell0DsCoordinates( 1, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates(0, vert_orario[0]);
+		area = area + (mesh.Cell0DsCoordinates( 0, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates( 1, vert_orario[0]));
+		area = area - (mesh.Cell0DsCoordinates( 1, vert_orario[numVert-1]) * mesh.Cell0DsCoordinates(0, vert_orario[0]));
 		
 		area = fabs(area);
 		area = area/2.0;
@@ -178,10 +156,7 @@ for (int polyg: mesh.Cell2DsId){
 
 		if( area <= tol2d) 
         throw std::runtime_error("Area nulla");
-	if (polyg == 8){
-		cout<<area<<endl;
-	cout<<0.25*0.1875/2<<endl;}
-
+	
 	
 	}
 		
@@ -238,17 +213,6 @@ for (int polyg: mesh.Cell2DsId){
 
 
 		
-
-		
-		
-		
-
-
-	//per il primo test stampo per ogni marker lista di vertici e di lati e faccio test visivo oppure faccio mappa in cui inserisco valori a mano e poi controllo che le due mappe siano uguali
-	// per gli altri faccio funzione area e lunghezza e ciclo tutti (tolleranza)
-	//per l'lutimo uso vicini(mesh converter su internet-paraview glance) o paraview-confronto visivo; file da ucd a utv-con coordinate di celle ( o anche marker e id)
-
-
 	
 	
     return 0;
