@@ -82,8 +82,10 @@ int main()
 		double a =mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(1,edge));
 		double b =mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(1,edge));
 		double len = sqrt(a*a + b*b);
-		if( len < std::numeric_limits<double>::epsilon() ) 
+		if( len <= std::numeric_limits<double>::epsilon() ) 
         throw std::runtime_error("Lunghezza nulla");
+	
+	
 	
 	}
 
@@ -171,11 +173,15 @@ for (int polyg: mesh.Cell2DsId){
 		
 		double eps = std::numeric_limits<double>::epsilon();
 		double tol2d = sqrt(3.0)*(eps*eps)/4.0;
+		
 
 
-
-		if( area < tol2d) 
+		if( area <= tol2d) 
         throw std::runtime_error("Area nulla");
+	if (polyg == 8){
+		cout<<area<<endl;
+	cout<<0.25*0.1875/2<<endl;}
+
 	
 	}
 		
