@@ -19,13 +19,6 @@ using namespace PolygonalLibrary;
 
 
 
-/*
-//cose da fare
--funzione area e lunghezza
--test nel main di area e lunghezza
--esportare mesh e test visivo
-*/
-
 int main()
 
 
