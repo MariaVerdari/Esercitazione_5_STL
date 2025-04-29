@@ -16,7 +16,6 @@ namespace PolygonalLibrary
 bool ImportMesh(PolygonalMesh& mesh);
 bool ImportCell0D(PolygonalMesh& mesh);
 bool ImportCell1D(PolygonalMesh& mesh);
-
 bool ImportCell2D(PolygonalMesh& mesh);
 
 }

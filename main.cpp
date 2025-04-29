@@ -82,7 +82,7 @@ int main()
 		double a =mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(0,mesh.Cell1DsExtrema(1,edge));
 		double b =mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(0,edge))- mesh.Cell0DsCoordinates(1,mesh.Cell1DsExtrema(1,edge));
 		double len = sqrt(a*a + b*b);
-		if( len <= std::numeric_limits<double>::epsilon() ) 
+		if( len < std::numeric_limits<double>::epsilon() ) 
         throw std::runtime_error("Lunghezza nulla");
 	
 	
@@ -154,7 +154,7 @@ int main()
 		
 
 
-		if( area <= tol2d) 
+		if( area < tol2d) 
         throw std::runtime_error("Area nulla");
 	
 	
